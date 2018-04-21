@@ -1,0 +1,16 @@
+---
+# tasks file for mysql
+- name: Install and configure mysql on CentOS
+  block:
+  - name: Add mysql repository
+    yum:
+      name: http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+      state: present
+
+  - name: Install mysql-server
+    yum:
+      name: mysql-server
+      state: latest
+      update_cache: yes
+  when:
+    - ansible_distribution == "CentOS"
