@@ -4,13 +4,43 @@
   block:
   - name: Add mysql repository
     yum:
-      name: http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+      name: "{{mysql_repo_packege}}"
       state: present
 
-  - name: Install mysql-server
+  - name: Install packages
     yum:
-      name: mysql-server
+      name:
+        - mysql-server
+        - MySQL-python
       state: latest
       update_cache: yes
+
+  - name: Enable and start MySQL service
+    service:
+      name: mysqld
+      state: started
+      enabled: yes
+
   when:
     - ansible_distribution == "CentOS"
+
+- name: Change MySQL root password
+  block:
+    - name: Try to login with password
+      mysql_user:
+        login_user: "{{mysql_login_user}}"
+        login_password: "{{mysql_login_password}}"
+        name: root
+        password: "{{mysql_root_password}}"
+        encrypted: yes
+        state: present
+  rescue:
+    - name: Try to login without password
+      mysql_user:
+        login_user: root
+        login_password: ""
+        name: root
+        password: "{{mysql_root_password}}"
+        encrypted: yes
+        state: present
+
