@@ -25,6 +25,14 @@
     - ansible_distribution == "CentOS"
 
 - name: Change MySQL root password
+  # mysql_user:
+  #   # login_user: root
+  #   # login_password: ""
+  #   name: root
+  #   password: "{{mysql_root_password}}"
+  #   # encrypted: yes
+  #   state: present
+
   block:
     - name: Try to login with password
       mysql_user:
@@ -32,15 +40,15 @@
         login_password: "{{mysql_login_password}}"
         name: root
         password: "{{mysql_root_password}}"
-        encrypted: yes
+        # encrypted: yes
         state: present
   rescue:
     - name: Try to login without password
       mysql_user:
-        login_user: root
-        login_password: ""
+        # login_user: root
+        # login_password: ""
         name: root
         password: "{{mysql_root_password}}"
-        encrypted: yes
+        # encrypted: yes
         state: present
 
