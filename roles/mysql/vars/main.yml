@@ -1,6 +1,7 @@
 ---
 # vars file for mysql
 mysql_root_password: password
+mysql_default_password: defpass
 
 mysql_login_user: root
 mysql_login_password: password

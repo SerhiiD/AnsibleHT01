@@ -25,30 +25,50 @@
     - ansible_distribution == "CentOS"
 
 - name: Change MySQL root password
-  # mysql_user:
-  #   # login_user: root
-  #   # login_password: ""
-  #   name: root
-  #   password: "{{mysql_root_password}}"
-  #   # encrypted: yes
-  #   state: present
-
   block:
-    - name: Try to login with password
+    - name: Try to login with password and set the root password
       mysql_user:
+        host_all: yes
         login_user: "{{mysql_login_user}}"
         login_password: "{{mysql_login_password}}"
         name: root
         password: "{{mysql_root_password}}"
-        # encrypted: yes
         state: present
   rescue:
-    - name: Try to login without password
+    - name: Try to login without password and set the root password
       mysql_user:
-        # login_user: root
-        # login_password: ""
+        host_all: yes
         name: root
         password: "{{mysql_root_password}}"
-        # encrypted: yes
         state: present
+
+- name: Remove the test database
+  mysql_db:
+    login_user: "{{mysql_login_user}}"
+    login_password: "{{mysql_login_password}}"
+    name: test
+    state: absent
+
+- name: Copy select_users_without_password.sql to remote host
+  copy:
+    src: select_users_without_password.sql
+    dest: /tmp
+- name: Get list of users without a password
+  mysql_db:
+    login_user: "{{mysql_login_user}}"
+    login_password: "{{mysql_login_password}}"
+    name: all
+    state: import
+    target: /tmp/select_users_without_password.sql
+  register: users_without_password
+
+- name: Set default password to users without password
+  mysql_user:
+    host_all: yes
+    login_user: "{{mysql_login_user}}"
+    login_password: "{{mysql_login_password}}"
+    name: "{{item}}"
+    password: "{{mysql_default_password}}"
+    state: present
+  with_items: "{{users_without_password.msg | regex_replace('^user\n','') | regex_findall('(.*)\n')}}"
 
