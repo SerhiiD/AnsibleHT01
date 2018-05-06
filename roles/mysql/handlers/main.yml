@@ -1,2 +1,12 @@
 ---
 # handlers file for mysql
+
+- name: delete mysql_secure_installation.sql
+  file:
+    path: ~/mysql_secure_installation.sql
+    state: absent
+
+- name: restart mysql
+  service:
+    name: mysqld
+    state: restarted

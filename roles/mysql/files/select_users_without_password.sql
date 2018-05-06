@@ -1,1 +1,0 @@
-SELECT user FROM mysql.user WHERE user != '' AND password = '';

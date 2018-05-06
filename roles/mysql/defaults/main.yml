@@ -2,3 +2,5 @@
 # defaults file for mysql
 
 mysql_repo_packege: http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+
+mysql_login_user: root
