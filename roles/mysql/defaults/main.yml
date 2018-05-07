@@ -4,3 +4,6 @@
 mysql_repo_packege: http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
 
 mysql_login_user: root
+
+# a number from 0 to 1 describes what percentage of memory will be used
+mysql_innodb_buffer_pool_size_factor: 0.8
