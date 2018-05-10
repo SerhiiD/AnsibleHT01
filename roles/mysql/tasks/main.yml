@@ -1,5 +1,6 @@
 ---
 # tasks file for mysql
+
 - name: Install and configure mysql on CentOS
   block:
   - name: Add mysql repository

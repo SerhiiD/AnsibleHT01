@@ -14,6 +14,7 @@ Vagrant.configure(2) do |config|
 
         lamp01.vm.provision "ansible" do |ansible|
             ansible.playbook = "lamp.yml"
+            ansible.host_key_checking = false
         end
     end
 end
