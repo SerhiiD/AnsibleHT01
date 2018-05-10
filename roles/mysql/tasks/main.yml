@@ -4,7 +4,7 @@
   block:
   - name: Add mysql repository
     yum:
-      name: "{{mysql_repo_packege}}"
+      name: "{{ mysql_repo_packege }}"
       state: present
 
   - name: Install packages
@@ -24,7 +24,7 @@
     - ansible_distribution == "CentOS"
   tags:
     - mysql
-    - install
+    - packages
 
 - name: Change MySQL root password
   block:
@@ -34,14 +34,14 @@
         login_user: "{{mysql_login_user}}"
         login_password: "{{mysql_login_password}}"
         name: root
-        password: "{{mysql_root_password}}"
+        password: "{{ mysql_root_password }}"
         state: present
   rescue:
     - name: Try to login without a password and set password for root
       mysql_user:
         host_all: yes
         name: root
-        password: "{{mysql_root_password}}"
+        password: "{{ mysql_root_password }}"
         state: present
   tags:
     - mysql
@@ -49,8 +49,8 @@
 
 - name: Remove the test database
   mysql_db:
-    login_user: "{{mysql_login_user}}"
-    login_password: "{{mysql_login_password}}"
+    login_user: "{{ mysql_login_user }}"
+    login_password: "{{ mysql_login_password }}"
     name: test
     state: absent
   tags:
@@ -60,17 +60,17 @@
 - name: Run SQL queries
   block:
     - name: Copy mysql_secure_installation.sql to the remote host
-      template:
+      copy:
         src: mysql_secure_installation.sql
         dest: ~/
-        owner: root
-        group: root
+        # owner: root
+        # group: root
         mode: '0600'
 
     - name: Execute mysql_secure_installation.sql
       mysql_db:
-        login_user: "{{mysql_login_user}}"
-        login_password: "{{mysql_login_password}}"
+        login_user: "{{ mysql_login_user }}"
+        login_password: "{{ mysql_login_password }}"
         name: all
         state: import
         target: ~/mysql_secure_installation.sql
@@ -91,4 +91,4 @@
     - restart mysql
   tags:
     - mysql
-    - configure
+    - configuration
