@@ -17,7 +17,8 @@ Vagrant.configure(2) do |config|
     config.vm.provision "ansible" do |ansible|
         ansible.playbook = "lamp.yml"
         ansible.host_key_checking = false
-        ansible.tags = "mysql, httpd, php"
+        # ansible.tags = "mysql, apache, php, nginx"
+        # ansible.tags = "nginx"
     end
 
 end

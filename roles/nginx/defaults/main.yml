@@ -1,2 +1,3 @@
 ---
 # defaults file for nginx
+nginx_default_www_directory: /var/nginx/www

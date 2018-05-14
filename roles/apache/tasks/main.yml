@@ -1,6 +1,6 @@
 ---
 # tasks file for apache
-- name: Install latest httpd packages
+- name: Install latest apache packages
   yum:
     name:
       - httpd
@@ -9,9 +9,9 @@
   when:
     - ansible_distribution == "CentOS"
   tags:
-    - httpd
+    - apache
     - packages
-    - httpd-packages
+    - apache-packages
 
 - name: Enable and start httpd service
   service:
@@ -21,9 +21,9 @@
   when:
     - ansible_distribution == "CentOS"
   tags:
-    - httpd
+    - apache
     - service
-    - httpd-service
+    - apache-service
 
 - name: Copy httpd.conf to the remote host
   template:
@@ -37,9 +37,9 @@
   when:
     - ansible_distribution == "CentOS"
   tags:
-    - httpd
+    - apache
     - configuration
-    - httpd-configuration
+    - apache-configuration
 
 - name: Copy index.html to the remote host
   template:
@@ -51,6 +51,6 @@
   when:
     - ansible_distribution == "CentOS"
   tags:
-    - httpd
+    - apache
     - configuration
-    - httpd-configuration
+    - apache-configuration

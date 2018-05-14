@@ -67,8 +67,6 @@
       copy:
         src: mysql_secure_installation.sql
         dest: ~/
-        # owner: root
-        # group: root
         mode: '0600'
 
     - name: Execute mysql_secure_installation.sql
