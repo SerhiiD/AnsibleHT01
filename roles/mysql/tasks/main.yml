@@ -1,14 +1,14 @@
 ---
 # tasks file for mysql
 
-- name: Install and configure mysql on CentOS
+- name: Install and start MySQL on CentOS
   block:
-  - name: Add mysql repository
+  - name: Add MySQL repository
     yum:
       name: "{{ mysql_repo_packege }}"
       state: present
 
-  - name: Install packages
+  - name: Install latest MySQL packages
     yum:
       name:
         - mysql-server
@@ -26,6 +26,7 @@
   tags:
     - mysql
     - packages
+    - mysql-packages
 
 - name: Change MySQL root password
   block:
@@ -47,6 +48,7 @@
   tags:
     - mysql
     - secure
+    - mysql-secure
 
 - name: Remove the test database
   mysql_db:
@@ -57,6 +59,7 @@
   tags:
     - mysql
     - secure
+    - mysql-secure
 
 - name: Run SQL queries
   block:
@@ -75,15 +78,16 @@
         name: all
         state: import
         target: ~/mysql_secure_installation.sql
-      notify:
-        - delete mysql_secure_installation.sql
+      # notify:
+      #   - delete mysql_secure_installation.sql
   tags:
     - mysql
     - secure
+    - mysql-secure
 
 - name: Copy my.cnf to the remote host
   template:
-    src: my.cnf
+    src: my.cnf.j2
     dest: /etc/my.cnf
     owner: root
     group: root
@@ -93,3 +97,4 @@
   tags:
     - mysql
     - configuration
+    - mysql-configuration
