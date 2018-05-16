@@ -1,14 +1,13 @@
 ---
 # tasks file for nginx
 
-- name: Add EPEL repository
+- name: Add nginx repository
   yum:
-    name:
-      - epel-release
+    name: http://nginx.org/packages/centos/7/noarch/RPMS/nginx-release-centos-7-0.el7.ngx.noarch.rpm
     state: latest
     update_cache: yes
   when:
-    - ansible_distribution == "CentOS"
+    - ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
   tags:
     - nginx
     - packages
@@ -26,18 +25,6 @@
     - nginx
     - packages
     - nginx-packages
-
-- name: Enable and start nginx service
-  service:
-    name: nginx
-    state: started
-    enabled: yes
-  when:
-    - ansible_distribution == "CentOS"
-  tags:
-    - nginx
-    - service
-    - nginx-service
 
 - name: Create site directory
   file:
@@ -58,9 +45,7 @@
     owner: root
     group: root
     mode: '0644'
-    selevel: _default
-    seuser: _default
-    serole: httpd_sys_content
+    # serole: 'httpd_sys_content'
   tags:
     - nginx
     - configuration
@@ -74,7 +59,7 @@
     group: root
     mode: '0644'
   notify:
-    - restart nginx
+    - restart_nginx
   when:
     - ansible_distribution == "CentOS"
   tags:
@@ -82,3 +67,33 @@
     - configuration
     - nginx-configuration
 
+- name: Copy /etc/nginx/conf.d/default.conf to the remote host
+  template:
+    src: conf.d/default.conf.j2
+    dest: /etc/nginx/conf.d/default.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - restart_nginx
+  when:
+    - ansible_distribution == "CentOS"
+  tags:
+    - nginx
+    - configuration
+    - nginx-configuration
+
+- name: Enable and start nginx service
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+  when:
+    - ansible_distribution == "CentOS"
+  tags:
+    - nginx
+    - service
+    - nginx-service
+
+# - name: flush_handlers
+#   meta: flush_handlers

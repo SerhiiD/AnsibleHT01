@@ -13,6 +13,22 @@
     - packages
     - apache-packages
 
+- name: Copy httpd.conf to the remote host
+  template:
+    src: httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - restart_httpd
+  when:
+    - ansible_distribution == "CentOS"
+  tags:
+    - apache
+    - configuration
+    - apache-configuration
+
 - name: Enable and start httpd service
   service:
     name: httpd
@@ -24,22 +40,6 @@
     - apache
     - service
     - apache-service
-
-- name: Copy httpd.conf to the remote host
-  template:
-    src: httpd.conf.j2
-    dest: /etc/httpd/conf/httpd.conf
-    owner: root
-    group: root
-    mode: '0644'
-  notify:
-    - restart httpd
-  when:
-    - ansible_distribution == "CentOS"
-  tags:
-    - apache
-    - configuration
-    - apache-configuration
 
 - name: Copy index.html to the remote host
   template:
@@ -54,3 +54,6 @@
     - apache
     - configuration
     - apache-configuration
+
+# - name: flush_handlers
+#   meta: flush_handlers

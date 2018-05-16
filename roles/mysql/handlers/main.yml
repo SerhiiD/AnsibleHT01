@@ -6,7 +6,7 @@
 #     path: ~/mysql_secure_installation.sql
 #     state: absent
 
-- name: restart mysql
+- name: restart_mysql
   service:
     name: mysqld
     state: restarted

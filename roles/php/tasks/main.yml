@@ -7,7 +7,7 @@
     state: latest
     update_cache: yes
   notify:
-    - restart httpd
+    - restart_httpd
   when:
     - ansible_distribution == "CentOS"
   tags:

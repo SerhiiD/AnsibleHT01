@@ -1,7 +1,7 @@
 ---
 # handlers file for php
 
-- name: restart httpd
+- name: restart_httpd
   service:
     name: httpd
     state: restarted

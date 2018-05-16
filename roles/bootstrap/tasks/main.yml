@@ -1,0 +1,38 @@
+---
+# tasks file for bootstrap
+- name: Update packages
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+  when:
+    - ansible_distribution == "CentOS"
+  tags:
+    - bootstrap
+    - packages
+    - bootstrap-packages
+
+- name: Update packages
+  yum:
+    name:
+      - vim
+      - telnet
+      - nmap
+      - sudo
+    state: latest
+    update_cache: yes
+  when:
+    - ansible_distribution == "CentOS"
+  tags:
+    - bootstrap
+    - packages
+    - bootstrap-packages
+
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  selinux:
+    policy: targeted
+    state: permissive
+  tags:
+    - bootstrap
+    - configuration
+    - bootstrap-configuration
