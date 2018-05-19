@@ -28,6 +28,9 @@
     - packages
     - mysql-packages
 
+# - debug:
+#     msg: "mysql_login_password: {{mysql_login_password}}"
+
 - name: Change MySQL root password
   block:
     - name: Try to login with a password and set password for root
@@ -49,6 +52,31 @@
     - mysql
     - secure
     - mysql-secure
+
+- name: Removes all anonymous user accounts
+  mysql_user:
+    login_user: "{{mysql_login_user}}"
+    login_password: "{{mysql_login_password}}"
+    name: ''
+    host_all: yes
+    state: absent
+  tags:
+    - mysql
+    - secure
+    - mysql-secure
+
+
+# - name: Removes root user account for non-localhost
+#   mysql_user:
+#     login_user: "{{mysql_login_user}}"
+#     login_password: "{{mysql_login_password}}"
+#     name: ''
+#     host: localhost
+#     state: absent
+#   tags:
+#     - mysql
+#     - secure
+#     - mysql-secure
 
 - name: Remove the test database
   mysql_db:
