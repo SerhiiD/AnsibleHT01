@@ -28,9 +28,6 @@
     - packages
     - mysql-packages
 
-# - debug:
-#     msg: "mysql_login_password: {{mysql_login_password}}"
-
 - name: Change MySQL root password
   mysql_user:
     host_all: yes
@@ -54,28 +51,6 @@
     - configuration
     - mysql-configuration
 
-# - name: Change MySQL root password
-#   block:
-#     - name: Try to login with a password and set password for root
-#       mysql_user:
-#         host_all: yes
-#         login_user: "{{mysql_login_user}}"
-#         login_password: "{{mysql_login_password}}"
-#         name: root
-#         password: "{{ mysql_root_password }}"
-#         state: present
-#   rescue:
-#     - name: Try to login without a password and set password for root
-#       mysql_user:
-#         host_all: yes
-#         name: root
-#         password: "{{ mysql_root_password }}"
-#         state: present
-#   tags:
-#     - mysql
-#     - secure
-#     - mysql-secure
-
 - name: Removes all anonymous user accounts
   mysql_user:
     login_user: "{{mysql_login_user}}"
@@ -87,7 +62,6 @@
     - mysql
     - secure
     - mysql-secure
-
 
 - name: Removes root user account for non-localhost
   mysql_user:
@@ -114,26 +88,6 @@
     - mysql
     - secure
     - mysql-secure
-
-# - name: Run SQL queries
-#   block:
-#     - name: Copy mysql_secure_installation.sql to the remote host
-#       copy:
-#         src: mysql_secure_installation.sql
-#         dest: ~/
-#         mode: '0600'
-
-#     - name: Execute mysql_secure_installation.sql
-#       mysql_db:
-#         login_user: "{{ mysql_login_user }}"
-#         login_password: "{{ mysql_login_password }}"
-#         name: all
-#         state: import
-#         target: ~/mysql_secure_installation.sql
-#   tags:
-#     - mysql
-#     - secure
-#     - mysql-secure
 
 - name: Copy my.cnf to the remote host
   template:
