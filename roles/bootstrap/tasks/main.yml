@@ -1,5 +1,6 @@
 ---
 # tasks file for bootstrap
+
 - name: Update packages
   yum:
     name: '*'
@@ -19,6 +20,8 @@
       - telnet
       - nmap
       - sudo
+      # - dkms
+      # - "@Development tools"
     state: latest
     update_cache: yes
   when:

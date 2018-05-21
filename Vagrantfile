@@ -8,6 +8,8 @@ Vagrant.configure(2) do |config|
 
         lamp01.vm.provider "virtualbox" do |virtualbox|
             virtualbox.name = "lamp01"
+            virtualbox.memory = 1024
+            virtualbox.cpus = 2
         end
 
         lamp01.vm.hostname = "lamp01"
