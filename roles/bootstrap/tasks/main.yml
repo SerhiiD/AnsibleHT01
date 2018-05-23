@@ -15,13 +15,7 @@
 
 - name: Install packages
   yum:
-    name:
-      - vim
-      - telnet
-      - nmap
-      - sudo
-      # - dkms
-      # - "@Development tools"
+    name: "{{ bootstrap_packages }}"
     state: latest
     update_cache: yes
   when:
@@ -39,3 +33,33 @@
     - bootstrap
     - configuration
     - bootstrap-configuration
+
+- name: debug
+  debug:
+    msg: "{{ item.key }}: {{ item.value }}"
+  with_dict: "{{ users_folders }}"
+  tags:
+    - bootstrap
+    - debug
+    - bootstrap-debug
+
+- name: blocks which describes needed users, folders and order of folders owners
+  block:
+    - name: Add users
+      user:
+        name: "{{ item.key }}"
+        state: present
+      with_dict: "{{ users_folders }}"
+
+    - name: create directories
+      file:
+        path: "{{ item.value }}"
+        state: directory
+        owner: "{{ item.key }}"
+        mode: 0775
+      with_dict: "{{ users_folders }}"
+      when: item.value != None
+  tags:
+    - bootstrap
+    - users
+    - bootstrap-users
