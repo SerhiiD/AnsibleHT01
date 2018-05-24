@@ -2,3 +2,5 @@
 # defaults file for bootstrap
 bootstrap_packages:
   - vim
+
+users_folders: {}

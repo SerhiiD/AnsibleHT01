@@ -51,12 +51,19 @@
         state: present
       with_dict: "{{ users_folders }}"
 
-    - name: create directories
+    - name: Create directories
       file:
         path: "{{ item.value }}"
         state: directory
         owner: "{{ item.key }}"
         mode: 0775
+      with_dict: "{{ users_folders }}"
+      when: item.value != None
+
+    - name: Create .bash_profile
+      template:
+        src: .bash_profile.j2
+        dest: "/home/{{ item.key }}/.bash_profile"
       with_dict: "{{ users_folders }}"
       when: item.value != None
   tags:
