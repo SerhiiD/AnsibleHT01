@@ -14,3 +14,4 @@ users_folders:
   dev:
   main-user: "/apps/{{ ansible_fqdn }}"
   project-user: /apps/project
+

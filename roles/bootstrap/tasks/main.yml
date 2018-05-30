@@ -45,7 +45,7 @@
 
 - name: blocks which describes needed users, folders and order of folders owners
   block:
-    - name: Add users
+    - name: Create users
       user:
         name: "{{ item.key }}"
         state: present
@@ -66,6 +66,18 @@
         dest: "/home/{{ item.key }}/.bash_profile"
       with_dict: "{{ users_folders }}"
       when: item.value != None
+  tags:
+    - bootstrap
+    - users
+    - bootstrap-users
+
+- name: Add users to groups
+  user:
+    name: "{{ item[0] }}"
+    group: "{{ item[1] }}"
+  with_nested:
+    - [ 'project-user', 'bmain-userob', 'dev' ]
+    - [ 'app1', 'app2', 'app3' ]
   tags:
     - bootstrap
     - users
