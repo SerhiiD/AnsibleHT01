@@ -66,18 +66,19 @@
         dest: "/home/{{ item.key }}/.bash_profile"
       with_dict: "{{ users_folders }}"
       when: item.value != None
-  tags:
-    - bootstrap
-    - users
-    - bootstrap-users
 
-- name: Add users to groups
-  user:
-    name: "{{ item[0] }}"
-    group: "{{ item[1] }}"
-  with_nested:
-    - [ 'project-user', 'bmain-userob', 'dev' ]
-    - [ 'app1', 'app2', 'app3' ]
+    - name: Add users to groups
+      user:
+        name: "{{ item[0] }}"
+        group: "{{ item[1] }}"
+        append: yes
+      with_nested:
+        - "{{ users_folders.keys() }}"
+        - "{{ users_folders.keys() }}"
+      when: 
+            not (item[0] | regex_search('^app[1-3]$')) 
+            and 
+            (item[1] | regex_search('^app[1-3]$'))
   tags:
     - bootstrap
     - users
