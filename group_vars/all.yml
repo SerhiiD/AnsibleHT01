@@ -1,17 +1,15 @@
 ---
 bootstrap_packages:
   - vim
+  - sudo
   - telnet
   - nmap
-  - sudo
-  - nano
-  - mc
 
-users_folders:
-  app1: /apps/app1
-  app2: /apps/app2
-  app3: /apps/app3
-  dev:
-  main-user: "/apps/{{ ansible_fqdn }}"
-  project-user: /apps/project
+# users_folders:
+#   app1: /apps/app1
+#   app2: /apps/app2
+#   app3: /apps/app3
+#   dev:
+#   main-user: "/apps/{{ ansible_fqdn }}"
+#   project-user: /apps/project
 

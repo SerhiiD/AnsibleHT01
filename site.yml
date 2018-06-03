@@ -1,0 +1,25 @@
+---
+- name: A three-tier application
+  hosts: all
+  become: true
+  roles:
+    - bootstrap
+
+- name: Frontend
+  hosts: frontend
+  become: true
+  roles:
+    - nginx
+
+- name: Backend
+  hosts: backend
+  become: true
+  roles:
+    - apache
+    - php
+
+- name: DB
+  hosts: db
+  become: true
+  roles:
+    - mysql
