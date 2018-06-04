@@ -2,68 +2,75 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 
 Vagrant.configure(2) do |config|
 
+    env = "STAG"
+    # env = "PROD"
+    
     frontendAmt = 1
-    backendAmt = 1
+    backendAmt = 2
     dbAmt = 2
 
     (1..frontendAmt).each do |id|
-        config.vm.define "frontend#{id}" do |frontend|
+        config.vm.define "#{env}frontend#{id}" do |frontend|
             frontend.vm.box = "centos/7"
-            # frontend.vm.network "forwarded_port", guest: 80, host: 1080
+            frontend.vm.network "forwarded_port", guest: 80, host: 1080
             # frontend.vm.network "forwarded_port", guest: 8080, host: 8080
             frontend.vm.network "private_network", type: "dhcp"
 
             frontend.vm.provider "virtualbox" do |virtualbox|
-                virtualbox.name = "frontend#{id}"
+                virtualbox.name = "#{env}frontend#{id}"
                 # virtualbox.memory = 1024
                 # virtualbox.cpus = 2
             end
 
-            frontend.vm.hostname = "frontend#{id}"
+            frontend.vm.hostname = "#{env}frontend#{id}"
         end
     end
 
     (1..backendAmt).each do |id|
-        config.vm.define "backend#{id}" do |backend|
+        config.vm.define "#{env}backend#{id}" do |backend|
             backend.vm.box = "centos/7"
             backend.vm.network "private_network", type: "dhcp"
 
             backend.vm.provider "virtualbox" do |virtualbox|
-                virtualbox.name = "backend#{id}"
+                virtualbox.name = "#{env}backend#{id}"
                 # virtualbox.memory = 1024
                 # virtualbox.cpus = 2
             end
 
-            backend.vm.hostname = "backend#{id}"
+            backend.vm.hostname = "#{env}backend#{id}"
         end
     end
 
     (1..dbAmt).each do |id|
-        config.vm.define "db#{id}" do |db|
+        config.vm.define "#{env}db#{id}" do |db|
             db.vm.box = "centos/7"
             db.vm.network "private_network", type: "dhcp"
 
             db.vm.provider "virtualbox" do |virtualbox|
-                virtualbox.name = "db#{id}"
+                virtualbox.name = "#{env}db#{id}"
                 # virtualbox.memory = 1024
                 # virtualbox.cpus = 2
             end
 
-            db.vm.hostname = "db#{id}"
-        end
-    end
+            db.vm.hostname = "#{env}db#{id}"
 
-    config.vm.provision "ansible" do |ansible|
-        ansible.playbook = "site.yml"
-        ansible.host_key_checking = false
-        ansible.groups = {
-            "frontend" => ["frontend"],
-            "backend" => ["backend"],
-            "db" => ["db[1:#{dbAmt}]"]
-        }
-        # ansible.tags = "mysql, apache, php, nginx"
-        # ansible.tags = "nginx-packages, nginx-service"
-        # ansible.tags = "bootstrap-users"
+            if id == dbAmt
+                db.vm.provision "ansible" do |ansible|
+                    ansible.playbook = "site.yml"
+                    ansible.host_key_checking = false
+                    ansible.groups = {
+                        "#{env}:children" => ["#{env}frontend", "#{env}backend", "#{env}db"],
+
+                        "#{env}frontend" => ["#{env}frontend[1:#{frontendAmt}]"],
+                        "#{env}backend" => ["#{env}backend[1:#{backendAmt}]"],
+                        "#{env}db" => ["#{env}db[1:#{dbAmt}]"]
+                    }
+                    # ansible.tags = "mysql, apache, php, nginx"
+                    # ansible.tags = "nginx-packages, nginx-service"
+                    # ansible.tags = "bootstrap-users"
+                end
+            end
+        end
     end
 
 end

@@ -1,25 +1,31 @@
 ---
-- name: A three-tier application
+- name: Common
   hosts: all
   become: true
   roles:
-    - bootstrap
+    - common
 
-- name: Frontend
-  hosts: frontend
+- name: DB
+  hosts: 
+    - STAGdb
+    - PRODdb
   become: true
   roles:
-    - nginx
+    - mysql
 
 - name: Backend
-  hosts: backend
+  hosts: 
+    - STAGbackend
+    - PRODbackend
   become: true
   roles:
     - apache
     - php
 
-- name: DB
-  hosts: db
+- name: Frontend
+  hosts:
+    - STAGfrontend
+    - PRODfrontend
   become: true
   roles:
-    - mysql
+    - nginx
