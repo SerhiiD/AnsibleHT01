@@ -56,6 +56,7 @@ Vagrant.configure(2) do |config|
 
             if id == dbAmt
                 db.vm.provision "ansible" do |ansible|
+                    ansible.limit = "all"
                     ansible.playbook = "site.yml"
                     ansible.host_key_checking = false
                     ansible.groups = {
