@@ -5,13 +5,13 @@
   roles:
     - common
 
-- name: DB
-  hosts: 
-    - STAGdb
-    - PRODdb
+- name: Frontend
+  hosts:
+    - STAGfrontend
+    - PRODfrontend
   become: true
   roles:
-    - mysql
+    - nginx
 
 - name: Backend
   hosts: 
@@ -22,10 +22,10 @@
     - apache
     - php
 
-- name: Frontend
-  hosts:
-    - STAGfrontend
-    - PRODfrontend
+- name: DB
+  hosts: 
+    - STAGdb
+    - PRODdb
   become: true
   roles:
-    - nginx
+    - mysql

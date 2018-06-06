@@ -1,13 +1,13 @@
 ENV["LC_ALL"] = "en_US.UTF-8"
 
-Vagrant.configure(2) do |config|
+env = "STAG"
+# env = "PROD"
 
-    env = "STAG"
-    # env = "PROD"
-    
-    frontendAmt = 1
-    backendAmt = 2
-    dbAmt = 2
+frontendAmt = 1
+backendAmt = 2
+dbAmt = 2
+
+Vagrant.configure(2) do |config|
 
     (1..frontendAmt).each do |id|
         config.vm.define "#{env}frontend#{id}" do |frontend|
