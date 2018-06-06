@@ -1,2 +1,12 @@
 ---
 apache_port: 80
+
+mysql_databases:
+  - wordpress
+
+mysql_users:
+  - name: wordpressuser
+    host: '%'
+    password: temppassword
+    priv: wordpress.*:ALL
+

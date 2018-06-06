@@ -103,5 +103,31 @@
     - configuration
     - mysql-configuration
 
-# - name: flush_handlers
+- name: Create databases
+  mysql_db:
+    login_user: "{{ mysql_login_user }}"
+    login_password: "{{ mysql_login_password }}"
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ mysql_databases }}"
+  tags:
+    - mysql
+    - mysql-db
+
+- name: Create users
+  mysql_user:
+    login_user: "{{mysql_login_user}}"
+    login_password: "{{mysql_login_password}}"
+    name: "{{ item.name }}"
+    host: "{{ item.host }}"
+    password: "{{ item.password }}"
+    priv: "{{ item.priv }}"
+    state: present
+  with_items: "{{ mysql_users }}"
+  tags:
+    - mysql
+    - secure
+    - mysql-secure
+
+# - name: flush_handlers1
 #   meta: flush_handlers

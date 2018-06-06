@@ -12,6 +12,7 @@ Vagrant.configure(2) do |config|
     (1..frontendAmt).each do |id|
         config.vm.define "#{env}frontend#{id}" do |frontend|
             frontend.vm.box = "centos/7"
+            frontend.vm.network "forwarded_port", guest: 80, host: 80
             frontend.vm.network "forwarded_port", guest: 80, host: 1080
             # frontend.vm.network "forwarded_port", guest: 8080, host: 8080
             frontend.vm.network "private_network", type: "dhcp"
@@ -66,9 +67,8 @@ Vagrant.configure(2) do |config|
                         "#{env}backend" => ["#{env}backend[1:#{backendAmt}]"],
                         "#{env}db" => ["#{env}db[1:#{dbAmt}]"]
                     }
-                    # ansible.tags = "mysql, apache, php, nginx"
-                    # ansible.tags = "nginx-packages, nginx-service"
-                    # ansible.tags = "bootstrap-users"
+                    # ansible.tags = "common, mysql, apache, php, nginx"
+                    ansible.tags = "mysql"
                 end
             end
         end

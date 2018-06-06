@@ -1,5 +1,5 @@
 ---
-# tasks file for bootstrap
+# tasks file for common
 
 - name: Update packages
   yum:
@@ -9,39 +9,39 @@
   when:
     - ansible_distribution == "CentOS"
   tags:
-    - bootstrap
+    - common
     - packages
-    - bootstrap-packages
+    - common-packages
 
 - name: Install packages
   yum:
-    name: "{{ bootstrap_packages }}"
+    name: "{{ common_packages }}"
     state: latest
     update_cache: yes
   when:
     - ansible_distribution == "CentOS"
   tags:
-    - bootstrap
+    - common
     - packages
-    - bootstrap-packages
+    - common-packages
 
 - name: Put SELinux in permissive mode, logging actions that would be blocked.
   selinux:
     policy: targeted
     state: permissive
   tags:
-    - bootstrap
+    - common
     - configuration
-    - bootstrap-configuration
+    - common-configuration
 
 - name: debug
   debug:
     msg: "{{ item.key }}: {{ item.value }}"
   with_dict: "{{ users_folders }}"
   tags:
-    - bootstrap
+    - common
     - debug
-    - bootstrap-debug
+    - common-debug
 
 - name: blocks which describes needed users, folders and order of folders owners
   block:
@@ -80,6 +80,6 @@
             and 
             (item[1] | regex_search('^app[1-3]$'))
   tags:
-    - bootstrap
+    - common
     - users
-    - bootstrap-users
+    - common-users
