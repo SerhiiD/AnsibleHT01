@@ -9,16 +9,16 @@
 
 - name: Frontend
   hosts:
-    - STAGfrontend
-    - PRODfrontend
+    - STAG_frontend
+    - PROD_frontend
   become: true
   roles:
     - nginx
 
 - name: Backend
   hosts: 
-    - STAGbackend
-    - PRODbackend
+    - STAG_backend
+    - PROD_backend
   become: true
   roles:
     - apache
@@ -26,8 +26,8 @@
 
 - name: DB
   hosts: 
-    - STAGdb
-    - PRODdb
+    - STAG_db
+    - PROD_db
   become: true
   roles:
     - mysql
