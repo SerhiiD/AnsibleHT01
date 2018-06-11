@@ -5,6 +5,8 @@ common_packages:
   - telnet
   - nmap
 
+apache_port: 80
+
 mysql_databases:
   - wordpress
 

@@ -6,8 +6,6 @@
 
 var_ENVIRONMENT: STAGING
 
-apache_port: 80
-
 mysql_users:
   - name: wordpressuser
     host: '%'
