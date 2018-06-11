@@ -14,9 +14,7 @@ Vagrant.configure(2) do |config|
         (1..frontendAmt).each do |id|
             config.vm.define "#{env}frontend#{id}" do |frontend|
                 frontend.vm.box = "centos/7"
-                frontend.vm.network "forwarded_port", guest: 80, host: 80
-                frontend.vm.network "forwarded_port", guest: 80, host: 1080
-                # frontend.vm.network "forwarded_port", guest: 8080, host: 8080
+                frontend.vm.network "forwarded_port", guest: 80, host: "#{8080 + frontendAmt}"
                 frontend.vm.network "private_network", type: "dhcp"
 
                 frontend.vm.provider "virtualbox" do |virtualbox|
