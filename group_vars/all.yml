@@ -1,9 +1,12 @@
 ---
-bootstrap_packages:
+common_packages:
   - vim
   - sudo
   - telnet
   - nmap
+
+mysql_databases:
+  - wordpress
 
 # users_folders:
 #   app1: /apps/app1

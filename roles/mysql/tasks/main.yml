@@ -53,8 +53,8 @@
 
 - name: Removes all anonymous user accounts
   mysql_user:
-    login_user: "{{mysql_login_user}}"
-    login_password: "{{mysql_login_password}}"
+    login_user: "{{ mysql_login_user }}"
+    login_password: "{{ mysql_login_password }}"
     name: ''
     host_all: yes
     state: absent
@@ -65,8 +65,8 @@
 
 - name: Removes root user account for non-localhost
   mysql_user:
-    login_user: "{{mysql_login_user}}"
-    login_password: "{{mysql_login_password}}"
+    login_user: "{{ mysql_login_user }}"
+    login_password: "{{ mysql_login_password }}"
     name: root
     host: "{{ item }}"
     state: absent
@@ -116,8 +116,8 @@
 
 - name: Create users
   mysql_user:
-    login_user: "{{mysql_login_user}}"
-    login_password: "{{mysql_login_password}}"
+    login_user: "{{ mysql_login_user }}"
+    login_password: "{{ mysql_login_password }}"
     name: "{{ item.name }}"
     host: "{{ item.host }}"
     password: "{{ item.password }}"
@@ -126,8 +126,24 @@
   with_items: "{{ mysql_users }}"
   tags:
     - mysql
-    - secure
-    - mysql-secure
+    - users
+    - mysql-users
 
-# - name: flush_handlers1
+- name: Create dynamic users
+  mysql_user:
+    login_user: "{{ mysql_login_user }}"
+    login_password: "{{ mysql_login_password }}"
+    name: "{{ dynamic_mysql_users.name }}{{ '%2x'|format(item) }}"
+    host: '%'
+    password: "{{ dynamic_mysql_users.password }}{{ '%2x'|format(item) }}"
+    # priv: "{{ item.priv }}"
+    state: present
+  loop: "{{ range(1, dynamic_mysql_users.count | default(0)) | list }}"
+  when: dynamic_mysql_users
+  tags:
+    - mysql
+    - users
+    - mysql-users
+
+# - name: flush_handlers
 #   meta: flush_handlers

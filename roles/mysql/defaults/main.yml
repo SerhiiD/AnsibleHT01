@@ -22,3 +22,4 @@ mysql_innodb_buffer_pool_size_factor: 0.8
 
 mysql_databases: {}
 mysql_users: {}
+dynamic_mysql_users: {}

@@ -4,6 +4,8 @@
   become: true
   roles:
     - common
+  tags:
+    - common
 
 - name: Frontend
   hosts:
@@ -28,4 +30,6 @@
     - PRODdb
   become: true
   roles:
+    - mysql
+  tags:
     - mysql
