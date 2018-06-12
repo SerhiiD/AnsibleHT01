@@ -62,6 +62,7 @@ Vagrant.configure(2) do |config|
                         ansible.limit = "all"
                         ansible.playbook = "site.yml"
                         ansible.host_key_checking = false
+                        ansible.verbose = false
                         ansible.groups = {
                             "#{env}:children" => ["#{env}_frontend", "#{env}_backend", "#{env}_db"],
 
@@ -70,7 +71,7 @@ Vagrant.configure(2) do |config|
                             "#{env}_db" => ["#{env}-db-[1:#{dbAmt}]"]
                         }
                         # ansible.tags = "common, mysql, apache, php, nginx"
-                        # ansible.tags = "mysql"
+                        ansible.tags = "nginx"
                     end
                 end
             end

@@ -26,30 +26,30 @@
     - packages
     - nginx-packages
 
-- name: Create site directory
-  file:
-    path: "{{ nginx_default_www_directory }}"
-    state: directory
-    owner: root
-    group: root
-    mode: '0755'
-  tags:
-    - nginx
-    - configuration
-    - nginx-configuration
+# - name: Create site directory
+#   file:
+#     path: "{{ nginx_default_www_directory }}"
+#     state: directory
+#     owner: root
+#     group: root
+#     mode: '0755'
+#   tags:
+#     - nginx
+#     - configuration
+#     - nginx-configuration
 
-- name: Copy index.html to the remote host
-  template:
-    src: index.html.j2
-    dest: "{{ nginx_default_www_directory }}/index.html"
-    owner: root
-    group: root
-    mode: '0644'
-    # serole: 'httpd_sys_content'
-  tags:
-    - nginx
-    - configuration
-    - nginx-configuration
+# - name: Copy index.html to the remote host
+#   template:
+#     src: index.html.j2
+#     dest: "{{ nginx_default_www_directory }}/index.html"
+#     owner: root
+#     group: root
+#     mode: '0644'
+#     # serole: 'httpd_sys_content'
+#   tags:
+#     - nginx
+#     - configuration
+#     - nginx-configuration
 
 - name: Copy nginx.conf to the remote host
   template:
@@ -94,6 +94,15 @@
     - nginx
     - service
     - nginx-service
+
+- name: Debug msg
+  debug:
+    msg: "{{ hostvars[item]['ansible_eth1']['ipv4']['address'] }}"
+  with_items: "{{ groups[backend_group] }}"
+  tags:
+    - nginx
+
+# when: inventory_hostname in groups['group']
 
 # - name: flush_handlers
 #   meta: flush_handlers

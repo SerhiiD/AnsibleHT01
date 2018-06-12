@@ -33,3 +33,5 @@ dynamic_mysql_users:
 
 environment_variables:
   ENVIRONMENT: PRODUCTION
+
+backend_group: PROD_backend

@@ -19,3 +19,4 @@ mysql_users:
 environment_variables:
   ENVIRONMENT: STAGING
 
+backend_group: STAG_backend

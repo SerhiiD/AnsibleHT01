@@ -6,6 +6,7 @@ common_packages:
   - nmap
 
 apache_port: 80
+backend_port: "{{ apache_port }}"
 
 mysql_databases:
   - wordpress
