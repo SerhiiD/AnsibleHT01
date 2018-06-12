@@ -70,7 +70,7 @@ Vagrant.configure(2) do |config|
                             "#{env}_db" => ["#{env}-db-[1:#{dbAmt}]"]
                         }
                         # ansible.tags = "common, mysql, apache, php, nginx"
-                        ansible.tags = "mysql"
+                        # ansible.tags = "mysql"
                     end
                 end
             end

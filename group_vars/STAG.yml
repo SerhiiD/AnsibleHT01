@@ -4,8 +4,6 @@
 # * set global environment variable ENVIRONMENT = STAGING (you should see this variable when you run 'env' on your virtual server's shell)
 # * database password “password”
 
-var_ENVIRONMENT: STAGING
-
 mysql_users:
   - name: wordpressuser
     host: '%'
@@ -17,4 +15,7 @@ mysql_users:
           6233323732323833360a643933343335666134353638373236326364363539376336346431646361
           6561
     priv: wordpress.*:ALL
+
+environment_variables:
+  ENVIRONMENT: STAGING
 

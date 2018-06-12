@@ -5,8 +5,6 @@
 # * database password “Iwi11NeV3RevEeU$3defaultPA$$WORDS”
 # * extra users for DB (usernames: ecommerce-{{n}}, passwords: “pa$$wd{{n}}”, n = 1..5)
 
-var_ENVIRONMENT: PRODUCTION
-
 mysql_users:
   - name: wordpressuser
     host: '%'
@@ -32,3 +30,6 @@ dynamic_mysql_users:
           6333
   priv: wordpress.*:ALL
   count: 5
+
+environment_variables:
+  ENVIRONMENT: PRODUCTION

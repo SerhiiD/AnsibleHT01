@@ -136,9 +136,9 @@
     name: "{{ dynamic_mysql_users.name }}{{ '%d'|format(item) }}"
     host: '%'
     password: "{{ dynamic_mysql_users.password }}{{ '%d'|format(item) }}"
-    # priv: "{{ item.priv }}"
+    priv: "{{ dynamic_mysql_users.priv }}"
     state: present
-  loop: "{{ range(1, dynamic_mysql_users.count | default(0)) | list }}"
+  loop: "{{ range(1, dynamic_mysql_users.count+1 | default(0)) | list }}"
   when: dynamic_mysql_users
   tags:
     - mysql

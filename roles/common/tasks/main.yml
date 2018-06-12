@@ -67,19 +67,37 @@
       with_dict: "{{ users_folders }}"
       when: item.value != None
 
-    - name: Add users to groups
-      user:
-        name: "{{ item[0] }}"
-        group: "{{ item[1] }}"
-        append: yes
-      with_nested:
-        - "{{ users_folders.keys() }}"
-        - "{{ users_folders.keys() }}"
-      when: 
-            not (item[0] | regex_search('^app[1-3]$')) 
-            and 
-            (item[1] | regex_search('^app[1-3]$'))
+    # - name: Add users to groups
+    #   user:
+    #     name: "{{ item[0] }}"
+    #     group: "{{ item[1] }}"
+    #     append: yes
+    #   with_nested:
+    #     - "{{ users_folders.keys() }}"
+    #     - "{{ users_folders.keys() }}"
+    #   when: 
+    #         not (item[0] | regex_search('^app[1-3]$')) 
+    #         and 
+    #         (item[1] | regex_search('^app[1-3]$'))
   tags:
     - common
     - users
     - common-users
+
+- name: Set environment variables
+  template:
+    src: environment_variables.sh.j2
+    dest: /etc/profile.d/environment_variables.sh
+  tags:
+    - common
+    - environment
+    - common-environment
+
+
+#   lineinfile:
+#     path: /etc/environment
+#     line: 'ENVIRONMENT = PRODUCTION'
+#   tags:
+#     - common
+#     - environment
+#     - common-environment

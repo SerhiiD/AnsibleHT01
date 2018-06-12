@@ -1,0 +1,5 @@
+{% if environment_variables is defined and environment_variables != None %}
+{% for key, value in environment_variables.items()%}
+export {{ key }}="{{ value }}"
+{% endfor %}
+{% endif %}

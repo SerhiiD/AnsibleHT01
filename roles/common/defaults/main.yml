@@ -4,3 +4,5 @@ bootstrap_packages:
   - vim
 
 users_folders: {}
+
+environment_variables: {}
