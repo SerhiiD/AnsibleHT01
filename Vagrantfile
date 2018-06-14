@@ -1,14 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
 ENV["LC_ALL"] = "en_US.UTF-8"
 
 envList = ["STAG", "PROD"]
-# env = "STAG"
-# env = "PROD"
 
 frontendAmt = 1
 backendAmt = 2
 dbAmt = 2
 
 hostPort = 8080
+
+ansible_groups = {}
+envList.each do |env|
+    ansible_groups["#{env}:children"] = ["#{env}_frontend", "#{env}_backend", "#{env}_db"]
+    ansible_groups["#{env}_frontend"] = ["#{env}-frontend-[1:#{frontendAmt}]"]
+    ansible_groups["#{env}_backend"] = ["#{env}-backend-[1:#{backendAmt}]"]
+    ansible_groups["#{env}_db"] = ["#{env}-db-[1:#{dbAmt}]"]
+end
+# puts (ansible_groups)
 
 Vagrant.configure(2) do |config|
     envList.each do |env|
@@ -56,25 +66,24 @@ Vagrant.configure(2) do |config|
                 end
 
                 db.vm.hostname = "#{env}-db-#{id}"
-
-                if id == dbAmt
-                    db.vm.provision "ansible" do |ansible|
-                        ansible.limit = "all"
-                        ansible.playbook = "site.yml"
-                        ansible.host_key_checking = false
-                        ansible.verbose = false
-                        ansible.groups = {
-                            "#{env}:children" => ["#{env}_frontend", "#{env}_backend", "#{env}_db"],
-
-                            "#{env}_frontend" => ["#{env}-frontend-[1:#{frontendAmt}]"],
-                            "#{env}_backend" => ["#{env}-backend-[1:#{backendAmt}]"],
-                            "#{env}_db" => ["#{env}-db-[1:#{dbAmt}]"]
-                        }
-                        # ansible.tags = "common, mysql, apache, php, nginx"
-                        ansible.tags = "nginx"
-                    end
-                end
             end
         end
     end
+
+    config.vm.define "workaround" do |workaround|
+        workaround.vm.box = "hashicorp/precise64"
+        workaround.vm.provider "virtualbox" do |virtualbox|
+            virtualbox.name = "workaround"
+        end
+        workaround.vm.provision "ansible" do |ansible|
+            ansible.limit = "all:!workaround"
+            ansible.playbook = "site.yml"
+            ansible.host_key_checking = false
+            ansible.verbose = false
+            ansible.groups = ansible_groups
+            # ansible.tags = "common, mysql, apache, php, nginx"
+            # ansible.tags = "nginx"
+        end
+    end
+    
 end

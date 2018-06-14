@@ -1,6 +1,8 @@
 ---
 - name: Common
-  hosts: all
+  hosts:
+    - STAG
+    - PROD
   become: true
   roles:
     - common

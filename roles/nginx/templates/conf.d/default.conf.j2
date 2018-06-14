@@ -28,6 +28,10 @@ server {
         root   /usr/share/nginx/html;
     }
 
+    location / {
+       proxy_pass   http://backend;
+    }
+
     location ~ \.html$ {
        proxy_pass   http://backend;
     }

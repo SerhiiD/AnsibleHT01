@@ -95,12 +95,12 @@
     - service
     - nginx-service
 
-- name: Debug msg
-  debug:
-    msg: "{{ hostvars[item]['ansible_eth1']['ipv4']['address'] }}"
-  with_items: "{{ groups[backend_group] }}"
-  tags:
-    - nginx
+# - name: Debug msg
+#   debug:
+#     msg: "{{ hostvars[item]['ansible_eth1']['ipv4']['address'] }}"
+#   with_items: "{{ groups[backend_group] }}"
+#   tags:
+#     - nginx
 
 # when: inventory_hostname in groups['group']
 
