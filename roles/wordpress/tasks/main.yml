@@ -23,3 +23,11 @@
     - unpack
     - wordpress-download
     - wordpress-unpack
+
+- name: Create ./wp-content/uploads directory
+  file:
+    path: "{{ wordpress_directory }}/wp-content/uploads"
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0640
