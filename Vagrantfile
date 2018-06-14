@@ -18,9 +18,9 @@ envList.each do |env|
     ansible_groups["#{env}_backend"] = ["#{env}-backend-[1:#{backendAmt}]"]
     ansible_groups["#{env}_db"] = ["#{env}-db-[1:#{dbAmt}]"]
 end
-# puts (ansible_groups)
 
 Vagrant.configure(2) do |config|
+    
     envList.each do |env|
 
         (1..frontendAmt).each do |id|
@@ -68,6 +68,7 @@ Vagrant.configure(2) do |config|
                 db.vm.hostname = "#{env}-db-#{id}"
             end
         end
+
     end
 
     config.vm.define "workaround" do |workaround|

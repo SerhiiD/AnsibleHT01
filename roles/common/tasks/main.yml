@@ -34,55 +34,46 @@
     - configuration
     - common-configuration
 
-- name: debug
-  debug:
-    msg: "{{ item.key }}: {{ item.value }}"
-  with_dict: "{{ users_folders }}"
-  tags:
-    - common
-    - debug
-    - common-debug
+# - name: blocks which describes needed users, folders and order of folders owners
+#   block:
+#     - name: Create users
+#       user:
+#         name: "{{ item.key }}"
+#         state: present
+#       with_dict: "{{ users_folders }}"
 
-- name: blocks which describes needed users, folders and order of folders owners
-  block:
-    - name: Create users
-      user:
-        name: "{{ item.key }}"
-        state: present
-      with_dict: "{{ users_folders }}"
+#     - name: Create directories
+#       file:
+#         path: "{{ item.value }}"
+#         state: directory
+#         owner: "{{ item.key }}"
+#         mode: 0775
+#       with_dict: "{{ users_folders }}"
+#       when: item.value != None
 
-    - name: Create directories
-      file:
-        path: "{{ item.value }}"
-        state: directory
-        owner: "{{ item.key }}"
-        mode: 0775
-      with_dict: "{{ users_folders }}"
-      when: item.value != None
+#     - name: Create .bash_profile
+#       template:
+#         src: .bash_profile.j2
+#         dest: "/home/{{ item.key }}/.bash_profile"
+#       with_dict: "{{ users_folders }}"
+#       when: item.value != None
 
-    - name: Create .bash_profile
-      template:
-        src: .bash_profile.j2
-        dest: "/home/{{ item.key }}/.bash_profile"
-      with_dict: "{{ users_folders }}"
-      when: item.value != None
-
-    # - name: Add users to groups
-    #   user:
-    #     name: "{{ item[0] }}"
-    #     group: "{{ item[1] }}"
-    #     append: yes
-    #   with_nested:
-    #     - "{{ users_folders.keys() }}"
-    #     - "{{ users_folders.keys() }}"
-    #   when: 
-    #         not (item[0] | regex_search('^app[1-3]$')) 
-    #         and 
-    #         (item[1] | regex_search('^app[1-3]$'))
-  tags:
-    - common
-    - users
-    - common-users
+#     - name: Add users to groups
+#       user:
+#         name: "{{ item[0] }}"
+#         group: "{{ item[1] }}"
+#         append: yes
+#       with_nested:
+#         - "{{ users_folders.keys() }}"
+#         - "{{ users_folders.keys() }}"
+#       when: 
+#             not (item[0] | regex_search('^app[1-3]$')) 
+#             and 
+#             (item[1] | regex_search('^app[1-3]$'))
+#   tags:
+#     - common
+#     - users
+#     - common-users
 
 - name: Set environment variables
   template:
@@ -92,3 +83,11 @@
     - common
     - environment
     - common-environment
+
+- name: Set timezone to Europe/Kiev
+  timezone:
+    name: Europe/Kiev
+  tags:
+    - common
+    - time
+    - common-time
