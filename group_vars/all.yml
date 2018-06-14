@@ -11,6 +11,9 @@ backend_port: "{{ apache_port }}"
 mysql_databases:
   - wordpress
 
+wordpress_download_url: http://wordpress.org/latest.tar.gz
+wordpress_directory: /var/www/html/
+
 # users_folders:
 #   app1: /apps/app1
 #   app2: /apps/app2

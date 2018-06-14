@@ -23,6 +23,7 @@
   roles:
     - apache
     - php
+    - wordpress
 
 - name: DB
   hosts: 

@@ -41,19 +41,19 @@
     - service
     - apache-service
 
-- name: Copy index.html to the remote host
-  template:
-    src: index.html.j2
-    dest: /var/www/html/index.html
-    owner: root
-    group: root
-    mode: '0644'
-  when:
-    - ansible_distribution == "CentOS"
-  tags:
-    - apache
-    - configuration
-    - apache-configuration
+# - name: Copy index.html to the remote host
+#   template:
+#     src: index.html.j2
+#     dest: /var/www/html/index.html
+#     owner: root
+#     group: root
+#     mode: '0644'
+#   when:
+#     - ansible_distribution == "CentOS"
+#   tags:
+#     - apache
+#     - configuration
+#     - apache-configuration
 
 # - name: flush_handlers
 #   meta: flush_handlers

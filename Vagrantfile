@@ -78,12 +78,12 @@ Vagrant.configure(2) do |config|
         end
         workaround.vm.provision "ansible" do |ansible|
             ansible.limit = "all:!workaround"
+            ansible.groups = ansible_groups
             ansible.playbook = "site.yml"
             ansible.host_key_checking = false
-            ansible.verbose = false
-            ansible.groups = ansible_groups
+            # ansible.verbose = "-vvv"
             # ansible.tags = "common, mysql, apache, php, nginx"
-            # ansible.tags = "nginx"
+            # ansible.tags = "wordpress"
         end
     end
     
