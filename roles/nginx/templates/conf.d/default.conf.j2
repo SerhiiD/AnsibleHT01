@@ -28,17 +28,24 @@ server {
         root   /usr/share/nginx/html;
     }
 
-    location / {
-       proxy_pass   http://backend;
+{% if nginx_default_location is defined and nginx_default_location != None %}
+{% for item in nginx_default_location %}
+    location {{ item.value }} {
+{% for key,value in item.parameters.items() %}
+        {{ key }}   {{ value }};
+{% endfor %}
     }
 
-    location ~ \.html$ {
+{% endfor %}
+{% endif %}
+
+    {# location ~ \.html$ {
        proxy_pass   http://backend;
     }
 
     location ~ \.php$ {
        proxy_pass   http://backend;
-    }
+    } #}
 
     # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
     #

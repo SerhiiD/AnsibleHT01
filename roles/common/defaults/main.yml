@@ -1,5 +1,5 @@
 ---
-# defaults file for bootstrap
+# defaults file for common
 bootstrap_packages:
   - vim
 

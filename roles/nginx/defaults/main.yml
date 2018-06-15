@@ -3,3 +3,4 @@
 nginx_default_www_directory: /usr/share/nginx/html/default-site
 backend_port: 8080
 backend_group: ""
+nginx_default_location: {}

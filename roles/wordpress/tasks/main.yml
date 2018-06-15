@@ -1,21 +1,11 @@
 ---
-# tasks file for wordpress
-# - name: Download latest version of WordPress
-#   get_url:
-#     url: http://wordpress.org/latest.tar.gz
-#     dest: ~/latest.tar.gz
-#   tags:
-#     - wordpress
-#     - download
-#     - wordpress-download
-
 - name: Download and unpack WordPress
   unarchive:
     src: "{{ wordpress_download_url }}"
     dest: "{{ wordpress_directory }}"
     owner: apache
     group: apache
-    mode: 0640
+    mode: 0750
     remote_src: yes
   tags:
     - wordpress
@@ -31,3 +21,7 @@
     owner: apache
     group: apache
     mode: 0640
+
+# - name: Create .htaccess file
+#   template:
+#     source: 

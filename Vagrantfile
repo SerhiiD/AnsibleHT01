@@ -3,11 +3,12 @@
 
 ENV["LC_ALL"] = "en_US.UTF-8"
 
-envList = ["STAG", "PROD"]
+# envList = ["STAG", "PROD"]
+envList = ["STAG"]
 
 frontendAmt = 1
-backendAmt = 2
-dbAmt = 2
+backendAmt = 1
+dbAmt = 1
 
 hostPort = 8080
 
@@ -82,8 +83,9 @@ Vagrant.configure(2) do |config|
             ansible.playbook = "site.yml"
             ansible.host_key_checking = false
             # ansible.verbose = "-vvv"
-            # ansible.tags = "common, mysql, apache, php, nginx"
+            # ansible.tags = "common, mysql, apache, php, nginxm, wordpress"
             # ansible.tags = "wordpress"
+            ansible.tags = "nginx"
         end
     end
     

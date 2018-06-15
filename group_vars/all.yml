@@ -5,7 +5,7 @@ common_packages:
   - telnet
   - nmap
 
-apache_port: 80
+apache_port: 8080
 backend_port: "{{ apache_port }}"
 
 mysql_databases:
@@ -14,7 +14,16 @@ mysql_databases:
 wordpress_download_url: http://wordpress.org/latest.tar.gz
 wordpress_directory: /var/www/html/
 
-# users_folders:
+nginx_default_location:
+  - value: "/"
+    parameters:
+      proxy_pass: "http://backend"
+      proxy_redirect: "http://backend/wordpress/ http://$host:8081/wordpress/"
+  - value: "~ \\.html$"
+    parameters:
+      proxy_pass: "http://backend"
+
+ # users_folders:
 #   app1: /apps/app1
 #   app2: /apps/app2
 #   app3: /apps/app3
