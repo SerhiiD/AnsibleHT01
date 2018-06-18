@@ -20,6 +20,9 @@ envList.each do |env|
     ansible_groups["#{env}_db"] = ["#{env}-db-[1:#{dbAmt}]"]
 end
 
+ansible_host_vars = {}
+
+
 Vagrant.configure(2) do |config|
     
     envList.each do |env|
@@ -37,6 +40,8 @@ Vagrant.configure(2) do |config|
                 end
 
                 frontend.vm.hostname = "#{env}-frontend-#{id}"
+
+                ansible_host_vars["#{env}-frontend-#{id}"] = {"forwarded_port" => "#{hostPort}"}
             end
         end
 
@@ -80,12 +85,13 @@ Vagrant.configure(2) do |config|
         workaround.vm.provision "ansible" do |ansible|
             ansible.limit = "all:!workaround"
             ansible.groups = ansible_groups
+            ansible.host_vars = ansible_host_vars
             ansible.playbook = "site.yml"
             ansible.host_key_checking = false
             # ansible.verbose = "-vvv"
             # ansible.tags = "common, mysql, apache, php, nginxm, wordpress"
             # ansible.tags = "wordpress"
-            ansible.tags = "nginx"
+            # ansible.tags = "nginx"
         end
     end
     

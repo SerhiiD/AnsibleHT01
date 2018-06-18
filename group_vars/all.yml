@@ -18,7 +18,7 @@ nginx_default_location:
   - value: "/"
     parameters:
       proxy_pass: "http://backend"
-      proxy_redirect: "http://backend/wordpress/ http://$host:8081/wordpress/"
+      proxy_redirect: "http://backend/wordpress/ http://$host:{{ forwarded_port }}/wordpress/"
   - value: "~ \\.html$"
     parameters:
       proxy_pass: "http://backend"
