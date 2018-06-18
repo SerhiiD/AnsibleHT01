@@ -8,7 +8,7 @@ envList = ["STAG"]
 
 frontendAmt = 1
 backendAmt = 1
-dbAmt = 1
+dbAmt = 2
 
 hostPort = 8080
 

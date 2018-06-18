@@ -15,7 +15,7 @@ server {
 
     #location / {
         # root   /usr/share/nginx/html;
-    #    root {{ nginx_default_www_directory }};
+    #    root {{ nginx_default_html_directory }};
     #    index  index.html index.htm;
     #}
 
@@ -31,9 +31,11 @@ server {
 {% if nginx_default_locations is defined and nginx_default_locations != None %}
 {% for location in nginx_default_locations %}
     location {{ location.filter }} {
+{% if location.parameters is defined and location.parameters != None %}
 {% for parameter in location.parameters %}
         {{ parameter.name }}    {{ parameter.value }};
 {% endfor %}
+{% endif %}
     }
 
 {% endfor %}

@@ -33,8 +33,8 @@ environment_variables:
 
 nginx_backend_group: PROD_backend
 
-wordpress_database_name: wordpress
-wordpress_database_username: wordpressuser
+wordpress_database_group: PROD_db
+
 wordpress_database_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           33393464353232363733663139636364656334396131643865373638323866393131623966656162
@@ -43,4 +43,3 @@ wordpress_database_password: !vault |
           3838336634393530630a333735383434313737353530313263383763616662613961663138323465
           36653935393938386463663361386635316130666232333538343639656437626135313232366335
           6265333564666463303134363033646364383933626165666234
-wordpress_database_hostname: localhost

@@ -1,6 +1,6 @@
 ---
 # defaults file for nginx
-nginx_default_www_directory: /usr/share/nginx/html/
+nginx_default_html_directory: /usr/share/nginx/html/
 backend_port: 8080
 nginx_backend_group: ""
 nginx_default_locations: {}

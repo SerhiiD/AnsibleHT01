@@ -8,23 +8,23 @@ common_packages:
 apache_port: 8080
 backend_port: "{{ apache_port }}"
 
+nginx_default_html_directory: /usr/share/nginx/html/
+apache_default_html_directory: /var/www/html
+
 mysql_databases:
   - "{{ wordpress_database_name }}"
 
 wordpress_download_url: http://wordpress.org/latest.tar.gz
-wordpress_directory: /var/www/html/
+wordpress_directory: "{{ apache_default_html_directory }}"
+wordpress_database_name: wordpress
+wordpress_database_username: wordpressuser
+wordpress_database_hostname: "{{ hostvars[groups[wordpress_database_group][0]]['ansible_eth1']['ipv4']['address'] }}"
 
 nginx_default_locations:
   - filter: "~ \\.html$"
     parameters:
-      - name: proxy_pass
-        value: "http://backend"
-      - name: proxy_set_header
-        value: "X-Real-IP $remote_addr"
-      - name: proxy_set_header
-        value: "X-Forwarded-For $remote_addr"
-      - name: proxy_set_header
-        value: "Host  $host:{{ forwarded_port }}"
+      - name:  root
+        value: "/usr/share/nginx/html"
   - filter: "~ \\.php$"
     parameters:
       - name: proxy_pass
@@ -47,13 +47,3 @@ nginx_default_locations:
         value: "X-Forwarded-For $remote_addr"
       - name: proxy_set_header
         value: "Host  $host:{{ forwarded_port }}"
-
-
- # users_folders:
-#   app1: /apps/app1
-#   app2: /apps/app2
-#   app3: /apps/app3
-#   dev:
-#   main-user: "/apps/{{ ansible_fqdn }}"
-#   project-user: /apps/project
-

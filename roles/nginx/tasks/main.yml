@@ -28,7 +28,7 @@
 
 - name: Create site directory
   file:
-    path: "{{ nginx_default_www_directory }}"
+    path: "{{ nginx_default_html_directory }}"
     state: directory
     owner: root
     group: root
@@ -41,7 +41,7 @@
 - name: Copy index.html to the remote host
   template:
     src: index.html.j2
-    dest: "{{ nginx_default_www_directory }}/index.html"
+    dest: "{{ nginx_default_html_directory }}/index.html"
     owner: root
     group: root
     mode: '0644'

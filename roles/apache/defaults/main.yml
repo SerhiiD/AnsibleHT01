@@ -1,3 +1,4 @@
 ---
 # defaults file for apache
 apache_port: 8080
+apache_default_html_directory: /var/www/html
