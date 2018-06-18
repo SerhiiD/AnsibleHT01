@@ -2,3 +2,8 @@
 # defaults file for wordpress
 wordpress_download_url: http://wordpress.org/latest.tar.gz
 wordpress_directory: ~/
+
+wordpress_database_name: ''
+wordpress_database_username: ''
+wordpress_database_password: ''
+wordpress_database_hostname: localhost

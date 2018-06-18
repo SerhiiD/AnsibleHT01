@@ -6,6 +6,7 @@
       - php
       - php-gd
       - php-cli
+      - php-mysql
     state: latest
     update_cache: yes
   notify:
@@ -16,11 +17,3 @@
     - php
     - packages
     - php-packages
-
-- name: copy info.php to the remote host
-  copy:
-    src: info.php
-    dest: /var/www/html/info.php
-    # owner: root
-    # group: root
-    mode: '0644'

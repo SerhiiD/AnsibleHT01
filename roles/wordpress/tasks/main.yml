@@ -21,7 +21,19 @@
     owner: apache
     group: apache
     mode: 0640
+  tags:
+    - wordpress
+    - configuration
+    - wordpress-configuration
 
-# - name: Create .htaccess file
-#   template:
-#     source: 
+- name: Copy wp-config.php.j2 to the remote host
+  template:
+    src: wp-config.php.j2
+    dest: "{{ wordpress_directory }}/wordpress/wp-config.php"
+    owner: apache
+    group: apache
+    mode: 0750
+  tags:
+    - wordpress
+    - configuration
+    - wordpress-configuration

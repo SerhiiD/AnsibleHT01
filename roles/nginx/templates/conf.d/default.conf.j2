@@ -1,6 +1,6 @@
 upstream backend {
-{% if groups[backend_group] is defined and groups[backend_group] != None %}
-{% for item in groups[backend_group] %}
+{% if groups[nginx_backend_group] is defined and groups[nginx_backend_group] != None %}
+{% for item in groups[nginx_backend_group] %}
     server {{ hostvars[item]['ansible_eth1']['ipv4']['address'] }}:{{ backend_port }};
 {% endfor %}
 {% endif %}
@@ -28,35 +28,16 @@ server {
         root   /usr/share/nginx/html;
     }
 
-{% if nginx_default_location is defined and nginx_default_location != None %}
-{% for item in nginx_default_location %}
-    location {{ item.value }} {
-{% for key,value in item.parameters.items() %}
-        {{ key }}   {{ value }};
+{% if nginx_default_locations is defined and nginx_default_locations != None %}
+{% for location in nginx_default_locations %}
+    location {{ location.filter }} {
+{% for parameter in location.parameters %}
+        {{ parameter.name }}    {{ parameter.value }};
 {% endfor %}
     }
 
 {% endfor %}
 {% endif %}
-
-    {# location ~ \.html$ {
-       proxy_pass   http://backend;
-    }
-
-    location ~ \.php$ {
-       proxy_pass   http://backend;
-    } #}
-
-    # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-    #
-    #location ~ \.php$ {
-    #    root           html;
-    #    fastcgi_pass   127.0.0.1:9000;
-    #    fastcgi_index  index.php;
-    #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
-    #    include        fastcgi_params;
-    #}
-
     # deny access to .htaccess files, if Apache's document root
     # concurs with nginx's one
     #

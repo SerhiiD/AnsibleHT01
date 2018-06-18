@@ -1,14 +1,8 @@
 ---
 mysql_users:
-  - name: wordpressuser
+  - name: "{{ wordpress_database_username }}"
     host: '%'
-    password: !vault |
-          $ANSIBLE_VAULT;1.1;AES256
-          38633136653632303533623533376337373632636466376132633037336266333034623332393564
-          6233346530393033666665316639613531343865346465380a613863663233316362643963366535
-          34633962396332626332306638326632653534363265373065313535386337366138666433613336
-          6233323732323833360a643933343335666134353638373236326364363539376336346431646361
-          6561
+    password: "{{ wordpress_database_password }}"
     priv: wordpress.*:ALL
   - name: replication_user
     host: '%'
@@ -24,5 +18,17 @@ mysql_users:
 environment_variables:
   ENVIRONMENT: STAGING
 
-backend_group: STAG_backend
+nginx_backend_group: STAG_backend
 
+wordpress_database_group: STAG_db
+
+wordpress_database_name: wordpress
+wordpress_database_username: wordpressuser
+wordpress_database_password:  !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          38633136653632303533623533376337373632636466376132633037336266333034623332393564
+          6233346530393033666665316639613531343865346465380a613863663233316362643963366535
+          34633962396332626332306638326632653534363265373065313535386337366138666433613336
+          6233323732323833360a643933343335666134353638373236326364363539376336346431646361
+          6561
+wordpress_database_hostname: "{{ hostvars[groups[wordpress_database_group][0]]['ansible_eth1']['ipv4']['address'] }}"

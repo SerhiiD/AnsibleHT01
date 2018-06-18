@@ -9,19 +9,45 @@ apache_port: 8080
 backend_port: "{{ apache_port }}"
 
 mysql_databases:
-  - wordpress
+  - "{{ wordpress_database_name }}"
 
 wordpress_download_url: http://wordpress.org/latest.tar.gz
 wordpress_directory: /var/www/html/
 
-nginx_default_location:
-  - value: "/"
+nginx_default_locations:
+  - filter: "~ \\.html$"
     parameters:
-      proxy_pass: "http://backend"
-      proxy_redirect: "http://backend/wordpress/ http://$host:{{ forwarded_port }}/wordpress/"
-  - value: "~ \\.html$"
+      - name: proxy_pass
+        value: "http://backend"
+      - name: proxy_set_header
+        value: "X-Real-IP $remote_addr"
+      - name: proxy_set_header
+        value: "X-Forwarded-For $remote_addr"
+      - name: proxy_set_header
+        value: "Host  $host:{{ forwarded_port }}"
+  - filter: "~ \\.php$"
     parameters:
-      proxy_pass: "http://backend"
+      - name: proxy_pass
+        value: "http://backend"
+      - name: proxy_set_header
+        value: "X-Real-IP $remote_addr"
+      - name: proxy_set_header
+        value: "X-Forwarded-For $remote_addr"
+      - name: proxy_set_header
+        value: "Host  $host:{{ forwarded_port }}"
+  - filter: "/"
+    parameters:
+      - name: rewrite
+        value: "^/wordpress$ /wordpress/"
+      - name: proxy_pass
+        value: "http://backend"
+      - name: proxy_set_header
+        value: "X-Real-IP $remote_addr"
+      - name: proxy_set_header
+        value: "X-Forwarded-For $remote_addr"
+      - name: proxy_set_header
+        value: "Host  $host:{{ forwarded_port }}"
+
 
  # users_folders:
 #   app1: /apps/app1
