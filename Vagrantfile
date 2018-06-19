@@ -92,6 +92,7 @@ Vagrant.configure(2) do |config|
             # ansible.tags = "common, mysql, apache, php, nginxm, wordpress"
             # ansible.tags = "wordpress"
             # ansible.tags = "nginx"
+            # ansible.tags = "mysql"
         end
     end
     
