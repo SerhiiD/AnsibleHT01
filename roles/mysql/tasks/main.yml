@@ -169,8 +169,8 @@
 - name: Debug output
   debug:
     msg: 
-      - "{{ master }}"
-      - "{{ slave }}"
+      - "master: {{ master }}"
+      - "slave:  {{ slave }}"
   tags:
     - mysql
 
