@@ -93,6 +93,7 @@ Vagrant.configure(2) do |config|
             # ansible.tags = "wordpress"
             # ansible.tags = "nginx"
             # ansible.tags = "mysql"
+            ansible.tags = "mysql-replication"
         end
     end
     

@@ -1,0 +1,30 @@
+---
+# tasks file for mysql-replication
+
+- name: Get slave replication status
+  mysql_replication:
+    mode: getslave
+    login_user: "{{ mysql_login_user }}"
+    login_password: "{{ mysql_login_password }}"
+  # ignore_errors: true
+  register: slave
+  tags:
+    - mysql-replication
+
+- name: Get master replication status
+  mysql_replication:
+    mode: getmaster
+    login_user: "{{ mysql_login_user }}"
+    login_password: "{{ mysql_login_password }}"
+  # ignore_errors: true
+  register: master
+  tags:
+    - mysql-replication
+
+- name: Debug output
+  debug:
+    msg: 
+      - "master: {{ master }}"
+      - "slave:  {{ slave }}"
+  tags:
+    - mysql-replication
