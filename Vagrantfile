@@ -88,7 +88,7 @@ Vagrant.configure(2) do |config|
             ansible.host_vars = ansible_host_vars
             ansible.playbook = "site.yml"
             ansible.host_key_checking = false
-            # ansible.verbose = "-vvv"
+            # ansible.verbose = "-vvvv"
             # ansible.tags = "common, mysql, apache, php, nginxm, wordpress"
             # ansible.tags = "wordpress"
             # ansible.tags = "nginx"
