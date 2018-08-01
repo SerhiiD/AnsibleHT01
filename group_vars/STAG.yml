@@ -30,3 +30,5 @@ wordpress_database_password:  !vault |
           6233323732323833360a643933343335666134353638373236326364363539376336346431646361
           6561
 
+mysql_replication_replication_user: ""
+mysql_replication_replication_password: ""

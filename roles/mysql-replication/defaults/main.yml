@@ -6,3 +6,6 @@ mysql_replication_log_bin: /var/log/mysql/mysql-bin.log
 mysql_replication_relay_log: /var/log/mysql/mysql-relay-bin.log
 
 mysql_replication_dbs_to_replicate: {}
+
+mysql_replication_replication_user: ""
+mysql_replication_replication_password: ""
