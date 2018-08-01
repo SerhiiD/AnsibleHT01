@@ -1,2 +1,4 @@
 ---
 # defaults file for mysql-replication
+mysql_replication_role: 'slave'
+mysql_replication_server_id: 0

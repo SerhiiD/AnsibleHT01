@@ -72,6 +72,14 @@ Vagrant.configure(2) do |config|
                 end
 
                 db.vm.hostname = "#{env}-db-#{id}"
+
+                if id == 1 then
+                    ansible_host_vars["#{env}-db-#{id}"] = {"mysql_replication_role" => "master"}
+                else
+                    ansible_host_vars["#{env}-db-#{id}"] = {"mysql_replication_role" => "slave"}
+                end
+                ansible_host_vars["#{env}-db-#{id}"] = {"mysql_replication_server_id" => "#{id}"}
+                # server-id
             end
         end
 

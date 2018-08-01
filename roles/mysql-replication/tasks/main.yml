@@ -1,12 +1,21 @@
 ---
 # tasks file for mysql-replication
 
+- name: Set mysql server-id
+  lineinfile:
+    path: /etc/my.cnf
+    regexp: "^server-id"
+    line: "server-id={{ mysql_replication_server_id }}"
+  tags:
+    - mysql-replication
+
 - name: Get slave replication status
   mysql_replication:
     mode: getslave
     login_user: "{{ mysql_login_user }}"
     login_password: "{{ mysql_login_password }}"
   # ignore_errors: true
+  when: mysql_replication_role == "slave"
   register: slave
   tags:
     - mysql-replication
@@ -17,6 +26,7 @@
     login_user: "{{ mysql_login_user }}"
     login_password: "{{ mysql_login_password }}"
   # ignore_errors: true
+  when: mysql_replication_role == "master"
   register: master
   tags:
     - mysql-replication
@@ -24,6 +34,7 @@
 - name: Debug output
   debug:
     msg: 
+      - "{{ mysql_replication_server_id }}"
       - "master: {{ master }}"
       - "slave:  {{ slave }}"
   tags:
