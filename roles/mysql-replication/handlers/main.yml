@@ -1,2 +1,6 @@
 ---
 # handlers file for mysql-replication
+- name: restart_mysql
+  service:
+    name: mysqld.service
+    state: restarted

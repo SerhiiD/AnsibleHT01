@@ -7,13 +7,14 @@
   roles:
     - common
 
-- name: Frontend
-  hosts:
-    - STAG_frontend
-    - PROD_frontend
+- name: DB
+  hosts: 
+    - STAG_db
+    - PROD_db
   become: true
   roles:
-    - nginx
+    - mysql
+    - mysql-replication
 
 - name: Backend
   hosts: 
@@ -25,11 +26,10 @@
     - php
     - wordpress
 
-- name: DB
-  hosts: 
-    - STAG_db
-    - PROD_db
+- name: Frontend
+  hosts:
+    - STAG_frontend
+    - PROD_frontend
   become: true
   roles:
-    - mysql
-    - mysql-replication
+    - nginx

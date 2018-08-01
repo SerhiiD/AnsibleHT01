@@ -6,8 +6,51 @@
     path: /etc/my.cnf
     regexp: "^server-id"
     line: "server-id={{ mysql_replication_server_id }}"
+    state: present
+  notify:
+    - restart_mysql
   tags:
     - mysql-replication
+
+- name: Create folder for log_bin
+  file:
+    path: "{{ mysql_replication_log_bin | dirname }}"
+    state: directory
+    owner: mysql
+    group: mysql
+    mode: '0775'
+  tags:
+    - mysql-replication
+    - mysql-replication-master
+    - mysql-replication-slave
+
+- name: Set mysql log_bin on master
+  lineinfile:
+    path: /etc/my.cnf
+    regexp: "^log_bin"
+    line: "log_bin={{ mysql_replication_log_bin }}"
+    state: present
+  when: mysql_replication_role == "master"
+  notify:
+    - restart_mysql
+  tags:
+    - mysql-replication
+    - mysql-replication-master
+
+- name: Set mysql binlog-do-db on master
+  lineinfile:
+    path: /etc/my.cnf
+    line: "binlog_do_db={{ item }}"
+    state: present
+  when: mysql_replication_role == "master"
+  loop: "{{ mysql_replication_dbs_to_replicate }}"
+  notify:
+    - restart_mysql
+  tags:
+    - mysql-replication
+    - mysql-replication-master
+
+
 
 - name: Get slave replication status
   mysql_replication:
@@ -31,11 +74,11 @@
   tags:
     - mysql-replication
 
-- name: Debug output
-  debug:
-    msg: 
-      - "{{ mysql_replication_server_id }}"
-      - "master: {{ master }}"
-      - "slave:  {{ slave }}"
-  tags:
-    - mysql-replication
+# - name: Debug output
+#   debug:
+#     msg: 
+#       - "{{ mysql_replication_server_id }}"
+#       - "master: {{ master }}"
+#       - "slave:  {{ slave }}"
+#   tags:
+#     - mysql-replication

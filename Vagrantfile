@@ -73,13 +73,12 @@ Vagrant.configure(2) do |config|
 
                 db.vm.hostname = "#{env}-db-#{id}"
 
-                if id == 1 then
-                    ansible_host_vars["#{env}-db-#{id}"] = {"mysql_replication_role" => "master"}
+                if id == 1
+                    ansible_host_vars["#{env}-db-#{id}"] = {"mysql_replication_role" => "master", "mysql_replication_server_id" => "#{id}"}
                 else
-                    ansible_host_vars["#{env}-db-#{id}"] = {"mysql_replication_role" => "slave"}
+                    ansible_host_vars["#{env}-db-#{id}"] = {"mysql_replication_role" => "slave", "mysql_replication_server_id" => "#{id}"}
                 end
-                ansible_host_vars["#{env}-db-#{id}"] = {"mysql_replication_server_id" => "#{id}"}
-                # server-id
+
             end
         end
 
@@ -101,7 +100,7 @@ Vagrant.configure(2) do |config|
             # ansible.tags = "wordpress"
             # ansible.tags = "nginx"
             # ansible.tags = "mysql"
-            ansible.tags = "mysql-replication"
+            # ansible.tags = "mysql-replication"
         end
     end
     

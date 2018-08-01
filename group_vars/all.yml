@@ -4,6 +4,7 @@ common_packages:
   - sudo
   - telnet
   - nmap
+  - mlocate
 
 apache_port: 8080
 backend_port: "{{ apache_port }}"
@@ -12,6 +13,9 @@ nginx_default_html_directory: /usr/share/nginx/html/
 apache_default_html_directory: /var/www/html
 
 mysql_databases:
+  - "{{ wordpress_database_name }}"
+
+mysql_replication_dbs_to_replicate:
   - "{{ wordpress_database_name }}"
 
 wordpress_download_url: http://wordpress.org/latest.tar.gz

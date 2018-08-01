@@ -1,4 +1,7 @@
 ---
 # defaults file for mysql-replication
-mysql_replication_role: 'slave'
+mysql_replication_role: ""
 mysql_replication_server_id: 0
+mysql_replication_log_bin: /var/log/mysql/mysql-bin.log
+
+mysql_replication_dbs_to_replicate: {}
