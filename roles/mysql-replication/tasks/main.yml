@@ -50,8 +50,32 @@
     - mysql-replication
     - mysql-replication-master
 
+- name: Create folder for relay-log on slave
+  file:
+    path: "{{ mysql_replication_relay_log | dirname }}"
+    state: directory
+    owner: mysql
+    group: mysql
+    mode: '0775'
+  tags:
+    - mysql-replication
+    - mysql-replication-slave
+
+- name: Set mysql relay-log on slave
+  lineinfile:
+    path: /etc/my.cnf
+    regexp: "^relay-log"
+    line: "relay-log={{ mysql_replication_relay_log }}"
+    state: present
+  when: mysql_replication_role == "slave"
+  notify:
+    - restart_mysql
+  tags:
+    - mysql-replication
+    - mysql-replication-slave
 
 
+###
 - name: Get slave replication status
   mysql_replication:
     mode: getslave
