@@ -22,7 +22,7 @@ wordpress_download_url: http://wordpress.org/latest.tar.gz
 wordpress_directory: "{{ apache_default_html_directory }}"
 wordpress_database_name: wordpress
 wordpress_database_username: wordpressuser
-wordpress_database_hostname: "{{ hostvars[groups[wordpress_database_group][0]]['ansible_eth1']['ipv4']['address'] }}"
+wordpress_database_hostname: "{{ hostvars[groups[mysql_database_group][0]]['ansible_eth1']['ipv4']['address'] }}"
 
 nginx_default_locations:
   - filter: "~ \\.html$"

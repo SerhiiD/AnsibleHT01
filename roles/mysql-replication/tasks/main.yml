@@ -6,7 +6,7 @@
     mode: getmaster
     login_user: "{{ mysql_login_user }}"
     login_password: "{{ mysql_login_password }}"
-  when: mysql_replication_role == "master"
+  when: inventory_hostname == groups[mysql_database_group][0]
   register: master_replication_status
   tags:
     - mysql-replication
@@ -17,17 +17,27 @@
     mode: getslave
     login_user: "{{ mysql_login_user }}"
     login_password: "{{ mysql_login_password }}"
-  when: mysql_replication_role == "slave"
+  when: inventory_hostname != groups[mysql_database_group][0]
   register: slave_replication_status
   tags:
     - mysql-replication
     - mysql-replication-slave
 
+#########
+- debug:
+    var: master_replication_status.File
+  when: inventory_hostname == groups[mysql_database_group][0]
+
+- debug:
+    var: slave_replication_status
+  when: inventory_hostname != groups[mysql_database_group][0]
+#########
+
 - name: Set mysql server-id
   lineinfile:
     path: /etc/my.cnf
     regexp: "^server-id"
-    line: "server-id={{ mysql_replication_server_id }}"
+    line: "server-id={{ groups[mysql_database_group].index(inventory_hostname) }}"
     state: present
   notify:
     - restart_mysql
@@ -64,7 +74,7 @@
     regexp: "^log_bin"
     line: "log_bin={{ mysql_replication_log_bin }}"
     state: present
-  when: mysql_replication_role == "master"
+  when: inventory_hostname == groups[mysql_database_group][0]
   notify:
     - restart_mysql
   tags:
@@ -88,9 +98,34 @@
     regexp: "^relay-log"
     line: "relay-log={{ mysql_replication_relay_log }}"
     state: present
-  when: mysql_replication_role == "slave"
+  when: inventory_hostname != groups[mysql_database_group][0]
   notify:
     - restart_mysql
+  tags:
+    - mysql-replication
+    - mysql-replication-slave
+
+- name: flush_handlers
+  meta: flush_handlers
+
+- name: Get master replication status
+  mysql_replication:
+    mode: getmaster
+    login_user: "{{ mysql_login_user }}"
+    login_password: "{{ mysql_login_password }}"
+  when: inventory_hostname == groups[mysql_database_group][0]
+  register: master_replication_status
+  tags:
+    - mysql-replication
+    - mysql-replication-master
+
+- name: Get slave replication status
+  mysql_replication:
+    mode: getslave
+    login_user: "{{ mysql_login_user }}"
+    login_password: "{{ mysql_login_password }}"
+  when: inventory_hostname != groups[mysql_database_group][0]
+  register: slave_replication_status
   tags:
     - mysql-replication
     - mysql-replication-slave
@@ -100,19 +135,22 @@
     login_user: "{{ mysql_login_user }}"
     login_password: "{{ mysql_login_password }}"
     mode: changemaster
-    master_host: 172.28.128.5
-    # master_log_file: mysql-bin.000009
-    # master_log_pos: 4578
-    #hostvars[groups[nginx_backend_group]]['ansible_eth1']['ipv4']['address']
+    master_host: "{{ hostvars[groups[mysql_database_group][0]]['ansible_eth1']['ipv4']['address'] }}"
+    master_user: "{{ mysql_replication_replication_user }}"
+    master_password: "{{ mysql_replication_replication_password }}"
+    master_log_file: "{{ hostvars[groups[mysql_database_group][0]]['master_replication_status']['File'] }}"
+    master_log_pos: "{{ hostvars[groups[mysql_database_group][0]]['master_replication_status']['Position'] }}"
+  when: inventory_hostname != groups[mysql_database_group][0]
   tags:
     - mysql-replication
 
 - debug:
-  var: master_replication_status
+    var: master_replication_status
+  when: inventory_hostname == groups[mysql_database_group][0]
 
-# - name: Debug output
-#   debug:
-#     msg:
-#       - "{{ mysql_replication_server_id }}"
-#       - "master: {{ master }}"
-#       - "slave:  {{ slave }}"
+- debug:
+    var: slave_replication_status
+  when: inventory_hostname != groups[mysql_database_group][0]
+
+# - debug:
+#     var: groups[mysql_database_group].index(inventory_hostname)

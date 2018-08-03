@@ -6,8 +6,8 @@ ENV["LC_ALL"] = "en_US.UTF-8"
 # envList = ["STAG", "PROD"]
 envList = ["STAG"]
 
-frontendAmt = 1
-backendAmt = 1
+frontendAmt = 0
+backendAmt = 0
 dbAmt = 2
 
 hostPort = 8080
@@ -73,11 +73,11 @@ Vagrant.configure(2) do |config|
 
                 db.vm.hostname = "#{env}-db-#{id}"
 
-                if id == 1
-                    ansible_host_vars["#{env}-db-#{id}"] = {"mysql_replication_role" => "master", "mysql_replication_server_id" => "#{id}"}
-                else
-                    ansible_host_vars["#{env}-db-#{id}"] = {"mysql_replication_role" => "slave", "mysql_replication_server_id" => "#{id}"}
-                end
+                # if id == 1
+                #     ansible_host_vars["#{env}-db-#{id}"] = {"mysql_replication_role" => "master", "mysql_replication_server_id" => "#{id}"}
+                # else
+                #     ansible_host_vars["#{env}-db-#{id}"] = {"mysql_replication_role" => "slave", "mysql_replication_server_id" => "#{id}"}
+                # end
 
             end
         end
@@ -101,6 +101,7 @@ Vagrant.configure(2) do |config|
             # ansible.tags = "nginx"
             # ansible.tags = "mysql"
             # ansible.tags = "mysql-replication"
+            # ansible.tags = "debug"
         end
     end
     

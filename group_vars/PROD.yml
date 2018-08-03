@@ -27,7 +27,7 @@ environment_variables:
 
 nginx_backend_group: PROD_backend
 
-wordpress_database_group: PROD_db
+mysql_database_group: PROD_db
 
 wordpress_database_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256

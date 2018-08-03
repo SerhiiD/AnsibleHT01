@@ -14,7 +14,7 @@ environment_variables:
 
 nginx_backend_group: STAG_backend
 
-wordpress_database_group: STAG_db
+mysql_database_group: STAG_db
 
 wordpress_database_password:  !vault |
           $ANSIBLE_VAULT;1.1;AES256
